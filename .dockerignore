@@ -1,0 +1,10 @@
+node_modules/
+data/
+dist/
+.git/
+.gitignore
+npm-debug.log
+.DS_Store
+README.md
+Dockerfile
+.dockerignore
