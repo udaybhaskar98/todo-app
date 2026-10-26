@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: todosdb
+    ports:
+     - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d todosdb"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    image: ${ECR_REGISTRY}/todo-backend:v1
+    environment:
+      DATABASE_URL: postgres://postgres:pass123@db:5432/todosdb
+      PORT: "3000"
+    depends_on: 
+      db:
+        condition: service_healthy
+  
+  frontend:
+    image: ${ECR_REGISTRY}/todo-frontend:v1
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
