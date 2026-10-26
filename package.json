@@ -6,7 +6,12 @@
   "scripts": {
     "start": "node server.js",
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "db:up": "docker compose up -d db",
+    "db:stop": "docker compose stop db",
+    "db:reset": "docker compose down -v",
+    "db:seed": "node scripts/seed.js",
+    "db:migrate": "npm run db:up && npm run db:seed"
   },
   "engines": {
     "node": ">=18"

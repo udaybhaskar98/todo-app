@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: todo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-todo
+  template:
+    metadata:
+      labels:
+        app: backend-todo
+    spec:
+      containers:
+      - name: backend-pod
+        image: bhaskaruday/todo-app-backend:v2
+        resources:
+          requests:
+            cpu: 100m 
+            memory: 128Mi
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+      
+        env:
+        - name: NODE_ENV
+          valueFrom: 
+            configMapKeyRef:
+              name: todo-app-configmap
+              key: NODE_ENV
+        - name: PORT
+          valueFrom: 
+            configMapKeyRef:
+              name: todo-app-configmap
+              key: PORT
+        
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DATABASE_URL

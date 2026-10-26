@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: todo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-todo
+  template:
+    metadata:
+      labels:
+        app: frontend-todo
+    spec:
+      containers:
+      - name: frontend-pod
+        image: bhaskaruday/todo-app-frontend:v1
+        resources:
+          requests:
+            cpu: 100m 
+            memory: 128Mi
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
