@@ -1,1 +1,2 @@
 testing github webhook
+testing pipeline trigger from git using git as scm 
